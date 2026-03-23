@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 멋진 사진</title>
+    <style>
+        /* 기본 여백을 없애고 화면 전체를 사용합니다 */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #FFFFFF; /* 배경색 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* 화면의 세로 중앙에 오도록 설정 */
+        }
+
+        /* 사진이 PC/모바일에 맞춰 반응형으로 작동하게 합니다 */
+        .responsive-image {
+            max-width: 100%; /* 화면 폭을 넘지 않도록 제한 */
+            height: auto; /* 비율에 맞춰 높이 자동 조절 */
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <img src="Manishion.png" alt="메인 사진" class="responsive-image">
+</body>
+</html>
