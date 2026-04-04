@@ -3,104 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manishion - Coming Soon</title>
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <title>마니션</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
-        /* 기본 설정: 화면 전체를 채우고 중앙 정렬 */
-        body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
+        /* 기본 설정: 모든 폰트를 Nunito로 적용 */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito', sans-serif; -webkit-font-smoothing: antialiased; }
+        body, html { width: 100%; height: 100%; overflow: hidden; } 
+        
+        /* 스냅 스크롤 컨테이너 설정 */
+        .snap-container {
+            width: 100%;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        /* 각 섹션 공통 설정 */
+        section {
+            width: 100%;
+            height: 100vh; 
+            scroll-snap-align: start; 
+            display: flex;
+            flex-direction: column;
+            /* 💡 수정: 다시 완벽한 중앙 정렬로 복구 */
+            justify-content: center; 
+            align-items: center;
+            text-align: center;
+            padding: 0 20px; 
+            position: relative;
+        }
+
+        /* 💡 수정: 상단 로고 텍스트를 절대 위치(absolute)로 띄워서 중앙 정렬에 영향을 주지 않도록 복구 */
+        .header-box { 
+            position: absolute;
+            top: 5px;
+            left: 0;
+            width: 100%;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            z-index: 10;
+        }
+        .header-box h1 { 
+            font-size: 2.2rem; 
+            font-weight: 800; 
+            letter-spacing: -0.02em; 
+            margin-bottom: -5px; 
+            line-height: 1.1; 
+        }
+        .header-box .anno { 
+            font-size: 0.9rem; 
+            font-weight: 400; 
+            letter-spacing: 1.5px; 
+        }
+
+        /* 본문 콘텐츠 텍스트 스타일 */
+        h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 20px; word-break: keep-all; }
+        p { font-size: 1.2rem; line-height: 1.6; color: inherit; word-break: keep-all; max-width: 600px; margin: 0 auto; }
+        .highlight { color: #00D2D3; }
+
+        /* 섹션별 배경/텍스트 컬러 */
+        .sec-black { background-color: #111; color: #fff; }
+        .sec-white { background-color: #fff; color: #111; }
+        .sec-black .content, .sec-white .content { position: relative; z-index: 2; }
+
+        /* 하단 고정 로고 컨테이너 */
+        .logo-fixed-container {
+            position: fixed;
+            bottom: -30px; 
+            left: 0;
+            width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #ffffff; /* 전체 배경색은 흰색 유지 */
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-            text-align: center;
-            word-break: keep-all; 
+            z-index: 100; 
+            pointer-events: none; 
         }
 
-        .container {
-            width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
+        /* 준비된 Manishion.png 이미지를 위한 스타일 */
+        .fixed-logo-img {
+            height: 80px; 
+            width: auto;
+            transition: filter 0.5s ease; 
         }
 
-        /* 로고 이미지 반응형 처리 */
-        .logo {
-            max-width: 320px; 
-            width: 100%;
-            height: auto;
-            margin-bottom: 50px; 
+        /* 버튼 스타일 */
+        .link-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 40px; width: 100%; max-width: 500px; }
+        .btn { display: inline-block; padding: 15px; text-decoration: none; font-weight: 700; border-radius: 8px; border: 2px solid; transition: all 0.3s ease; }
+        .sec-black .btn { background-color: #fff; color: #111; border-color: #fff; }
+        .sec-black .btn:hover { background-color: #00D2D3; color: #fff; border-color: #00D2D3; transform: translateY(-3px); }
+        .sec-white .btn { background-color: #f1f3f5; color: #111; border-color: #eee; }
+        .sec-white .btn:hover { background-color: #00D2D3; color: #fff; border-color: #00D2D3; transform: translateY(-3px); }
+
+        /* B2B 섹션 문의 이메일 링크 스타일 */
+        .sec-black .link-contact { 
+            color: #fff; 
+            text-decoration: none; 
+            border-bottom: 1px solid #fff; 
+            transition: all 0.3s ease; 
+        }
+        .sec-black .link-contact:hover { 
+            color: #00D2D3; 
+            border-bottom-color: #00D2D3; 
         }
 
-        /* ✨수정된 부분: COMING SOON 텍스트 스타일 (블랙 박스 디자인) */
-        .title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #ffffff; /* 글자색: 흰색 */
-            background-color: #111111; /* 배경색: 검은색 */
-            display: inline-block; /* 글자 길이에 맞춰 배경 박스 생성 */
-            padding: 12px 24px; /* 박스 안쪽 여백 */
-            letter-spacing: 0.2em; /* 자간 넓게 */
-            margin: 0 0 25px 0;
-            border-radius: 4px; /* 모서리 살짝 둥글게 */
-            /* 시각적 중앙 정렬 보정 */
-            margin-right: -0.2em; 
+        /* Copyright 텍스트 스타일 */
+        .copyright-text { 
+            position: absolute; 
+            bottom: 50px; 
+            mid: 0%; 
+            width: 100%; 
+            font-size: 0.8rem; 
+            color: #888; 
+            z-index: 5; 
         }
-
-        /* 서브 텍스트 스타일 */
-        .subtitle {
-            font-size: 1.3rem;
-            font-weight: 400;
-            color: #555555; 
-            margin: 0;
-        }
-
-        .subtitle strong {
-            font-weight: 700;
-            color: #333333;
-        }
-
-        /* 하단 문의처 텍스트 스타일 */
-        .contact {
-            font-size: 0.95rem;
-            color: #888888; 
-            margin-top: 40px; 
-        }
-
-        /* 모바일 화면을 위한 반응형 스타일 */
-        @media (max-width: 600px) {
-            .logo {
-                max-width: 240px;
-                margin-bottom: 40px;
-            }
-            .title {
-                font-size: 1.3rem;
-                padding: 10px 20px;
-            }
-            .subtitle {
-                font-size: 1.05rem;
-            }
-            .contact {
-                font-size: 0.85rem;
-                margin-top: 30px;
-            }
+        
+        @media (max-width: 768px) {
+            .header-box h1 { font-size: 1.8rem; }
+            h2 { font-size: 2rem; }
+            .link-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <img src="Manishion.png" alt="Manishion" class="logo">
-        
-        <div>
-            <h1 class="title">COMING SOON</h1>
-        </div>
-        <p class="subtitle">새로운 <strong>Manishion</strong>을 준비하고 있습니다.</p>
-        
-        <p class="contact">[관련 문의 : manishion@naver.com]</p>
+    <div class="logo-fixed-container">
+        <img src="Manishion.png" alt="Manishion Logo" class="fixed-logo-img" id="bottomLogo">
     </div>
+
+    <div class="snap-container">
+        <section class="sec-black">
+            <div class="header-box">
+                <h1>Manishion</h1>
+                <span class="anno">Anno 1445</span>
+            </div>
+            <div class="content">
+                <h2>많이 시원해? <span class="highlight">마니션해!</span></h2>
+                <p>가장 힙하고 시원한 헬스엔터테인먼트의 시작.</p>
+            </div>
+        </section>
+
+        <section class="sec-white">
+            <div class="header-box">
+                <h1>Manishion</h1>
+                <span class="anno">Anno 1445</span>
+            </div>
+            <div class="content">
+                <h2 class="highlight">쿨하게, 고양이처럼.</h2>
+                <p>우리의 로고 속 고양이처럼 유연하고 당당하게.<br>지루했던 헬스케어에 재미를 더해,<br>스스로를 돌보는 시간이 즐거운 놀이가 됩니다.</p>
+            </div>
+        </section>
+
+        <section class="sec-black">
+            <div class="header-box">
+                <h1>Manishion</h1>
+                <span class="anno">Anno 1445</span>
+            </div>
+            <div class="content">
+                <h2><span class="highlight">1445년의 지혜,</span><br>현대의 트렌드를 입다.</h2>
+                <p>세종대왕의 '의방유취' 탄생 연도, Anno 1445.<br>전통의 지혜를 바탕으로,<br>일상에서 즉각적으로 "시원함"을 느끼는 솔루션을 만듭니다.</p>
+            </div>
+        </section>
+
+        <section class="sec-white">
+            <div class="header-box">
+                <h1>Manishion</h1>
+                <span class="anno">Anno 1445</span>
+            </div>
+            <div class="content">
+                <h2>마니션 만나러 가기</h2>
+                <p>힙한 마니션의 소식과 제품들을 확인해 보세요.</p>
+                <div class="link-grid">
+                    <a href="https://www.instagram.com/manishion.korea/" class="btn">인스타그램</a>
+                    <a href="https://www.youtube.com/@manishion" class="btn">유튜브</a>
+                    <a href="#" class="btn">네이버 스마트스토어</a>
+                    <a href="#" class="btn">쿠팡</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="sec-black">
+            <div class="header-box">
+                <h1>Manishion</h1>
+                <span class="anno">Anno 1445</span>
+            </div>
+            <div class="content">
+                <h2>B2B & Partnership</h2>
+                <p>마니션은 세상에 없던 시원한 가치를 함께 만들어갈 파트너를 찾습니다.</p>
+                <p style="margin-top: 20px;">각종 문의는 아래 이메일이나<br>SNS 채널을 통해 남겨주세요.</p>
+                <p style="margin-top: 10px; font-weight: 700;">
+                    <a href="mailto:manishion@naver.com" class="link-contact">manishion@naver.com</a>
+                </p>
+            </div>
+            <p class="copyright-text">Copyright © 2026 Manishion. All Rights Reserved.</p>
+        </section>
+    </div>
+
+    <script>
+        const snapContainer = document.querySelector('.snap-container');
+        const bottomLogo = document.getElementById('bottomLogo');
+
+        snapContainer.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const windowHeight = window.innerHeight;
+            
+            let currentSectionIndex = 0;
+            sections.forEach((section, index) => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top >= -windowHeight / 2 && rect.top <= windowHeight / 2) {
+                    currentSectionIndex = index;
+                }
+            });
+
+            if (currentSectionIndex % 2 === 0) {
+                // 검은색 배경 섹션: CSS 필터로 로고를 하얗게 반전
+                bottomLogo.style.filter = 'brightness(0) invert(1)';
+            } else {
+                // 흰색 배경 섹션: 원본 로고 그대로
+                bottomLogo.style.filter = 'none';
+            }
+        });
+
+        // 초기 로딩 시에도 색상 설정
+        snapContainer.dispatchEvent(new Event('scroll'));
+    </script>
 
 </body>
 </html>
